@@ -1,0 +1,12 @@
+[Desktop Entry]
+Version=1.0
+Type=Application
+Name=KLinkMonitor Native
+GenericName=Network Monitor
+Comment=Monitor Ethernet, Wi-Fi and VPN link status
+Exec=~/.local/bin/klinkmonitor-native
+Icon=klinkmonitor-native
+Terminal=false
+Categories=Qt;KDE;Network;Monitor;
+StartupNotify=false
+X-KDE-autostart-after=panel

@@ -1,0 +1,64 @@
+#pragma once
+
+#include <QObject>
+#include <QActionGroup>
+#include <QHash>
+#include <QMenu>
+#include <QPixmap>
+#include <QTimer>
+#include <KStatusNotifierItem>
+
+#include "monitor/InterfaceMonitor.h"
+
+namespace KLinkMonitorNative {
+class HistoryDb;
+class Settings;
+
+class Tray : public QObject
+{
+    Q_OBJECT
+public:
+    explicit Tray(InterfaceMonitor &monitor, HistoryDb &history, Settings &settings, QObject *parent = nullptr);
+    void show();
+
+private slots:
+    void updateStatus();
+    void blinkIcon();
+    void setInterface(const QString &interfaceName);
+    void setAutoMode();
+    void showHistory();
+    void showStatistics();
+    void showSettings();
+    void exitApplication();
+    void applySettings();
+
+private:
+    void buildMenu();
+    void buildInterfacesMenu();
+    QString effectiveInterface() const;
+    QColor colorForState(StatusState state) const;
+    QIcon iconForInfo(const InterfaceInfo &info) const;
+    QPixmap pixmapForInfo(const InterfaceInfo &info) const;
+    QString eventForChange(const InterfaceInfo &info, const QString &previous, const QString &current) const;
+    QString severityForChange(const InterfaceInfo &info, const QString &previous, const QString &current) const;
+    QString displayForRaw(const InterfaceInfo &info, const QString &raw) const;
+    void sendNotification(const QString &text, const QString &severity);
+    void setTrayPixmap(const QPixmap &pixmap);
+    void updateBlinkState(const InterfaceInfo &info);
+
+    InterfaceMonitor &m_monitor;
+    HistoryDb &m_history;
+    Settings &m_settings;
+    KStatusNotifierItem *m_sni = nullptr;
+    QMenu *m_menu = nullptr;
+    QMenu *m_interfacesMenu = nullptr;
+    QActionGroup *m_interfaceGroup = nullptr;
+    QTimer m_timer;
+    QTimer m_blinkTimer;
+    QHash<QString, QString> m_lastValues;
+    QPixmap m_currentPixmap;
+    QPixmap m_emptyPixmap;
+    bool m_shouldBlink = false;
+    bool m_blinkVisible = true;
+};
+}

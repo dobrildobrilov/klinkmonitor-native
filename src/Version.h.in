@@ -1,0 +1,5 @@
+#pragma once
+
+#define KLINKMONITOR_VERSION "@PROJECT_VERSION@"
+#define KLINKMONITOR_COMPONENT_NAME "klinkmonitor-native"
+#define KLINKMONITOR_DESKTOP_ID "klinkmonitor-native"
